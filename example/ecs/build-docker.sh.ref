@@ -1,0 +1,28 @@
+# Reference on commands to build the docker image
+#!/bin/sh
+
+docker build -t website-httpd:1.0 .
+
+# Configure AWS
+cd 
+mv .aws-org/ .aws
+
+# Create ECR Repository and Tag image
+aws ecr create-repository --repository-name website-httpd
+
+aws ecr describe-repositories | grep repositoryUri
+
+docker images
+
+docker tag website-httpd:1.0 <repositoryUri>/website-http:1.0 
+
+# Will Push
+# Open AWS Management Console to get 'View push commands'
+
+# Like as:
+# aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <prefix of your repository>
+
+docker push ...
+
+aws ecr list-images --repository-name website-httpd
+
